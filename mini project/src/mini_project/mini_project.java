@@ -47,7 +47,7 @@ public class mini_project {
 		return arr;
 		
 	}
-	
+	//
 	// returns the number of words in the file
 	private int numWords() {
 		
