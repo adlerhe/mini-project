@@ -277,63 +277,57 @@ public class Photo_shop extends Component {
      		
      		// getting the pixel and its surrounding pixels values
      		Color c = pixels[i-1][j-1];
-     		int r1 = c.getRed();
-     		int g1 = c.getGreen();
-     		int b1 = c.getBlue();
-     		Color c2 = pixels[i-1][j];
-     		int r2 = c2.getRed();
-     		int g2 = c2.getGreen();
-     		int b2 = c2.getBlue();
-     		Color c3 = pixels[i-1][j+1];
-     		int r3 = c3.getRed();
-     		int g3 = c3.getGreen();
-     		int b3 = c3.getBlue();		
-     		Color c4 = pixels[i][j-1];
-     		int r4 = c4.getRed();
-     		int g4 = c4.getGreen();
-     		int b4 = c4.getBlue();
-     		Color c5 = pixels[i][j];
-     		int r5 = c5.getRed();
-     		int g5 = c5.getGreen();
-     		int b5 = c5.getBlue();
-     		Color c6 = pixels[i][j+1];
-     		int r6 = c6.getRed();
-     		int g6 = c6.getGreen();
-     		int b6 = c6.getBlue();
-     		Color c7 = pixels[i+1][j-1];
-     		int r7 = c7.getRed();
-     		int g7 = c7.getGreen();
-     		int b7 = c7.getBlue();
-     		Color c8 = pixels[i+1][j];
-     		int r8 = c8.getRed();
-     		int g8 = c8.getGreen();
-     		int b8 = c8.getBlue();
-     		Color c9 = pixels[i+1][j+1];
-     		int r9 = c9.getRed();
-     		int g9 = c9.getGreen();
-     		int b9 = c9.getBlue();
+     		int r1 = c.getRed(),g1 = c.getGreen(),b1 = c.getBlue();
      		
+     		
+     		Color c2 = pixels[i-1][j];
+     		int r2 = c2.getRed(),g2 = c2.getGreen(),b2 = c2.getBlue();
+
+     		Color c3 = pixels[i-1][j+1];
+     		int r3 = c3.getRed(),g3 = c3.getGreen(),b3 = c3.getBlue();
+
+     		Color c4 = pixels[i][j-1];
+     		int r4 = c4.getRed(),g4 = c4.getGreen(),b4 = c4.getBlue();
+     		
+     		Color c5 = pixels[i][j];
+     		int r5 = c5.getRed(),g5 = c5.getGreen(),b5 = c5.getBlue();
+     		
+     		Color c6 = pixels[i][j+1];
+     		int r6 = c6.getRed(),g6 = c6.getGreen(),b6 = c6.getBlue();
+     		
+     		Color c7 = pixels[i+1][j-1];
+     		int r7 = c7.getRed(),g7 = c7.getGreen(),b7 = c7.getBlue();
+     		
+     		Color c8 = pixels[i+1][j];
+     		int r8 = c8.getRed(),g8 = c8.getGreen(),b8 = c8.getBlue();
+     		
+     		Color c9 = pixels[i+1][j+1];
+     		int r9 = c9.getRed(),g9 = c9.getGreen(),b9 = c9.getBlue();
      		// the pixel times eight and minus the surrounding pixels to get edge effect
      		sumofr = (r5 * 8) - (r1 + r2 + r3 + r4 + r6 + r7 + r8 + r9);
      		sumofg = (g5 * 8) - (g1 + g2 + g3 + g4 + g6 + g7 + g8 + g9);
      		sumofb = (b5 * 8) - (b1 + b2 + b3 + b4 + b6 + b7 + b8 + b9);
      		
      		// setting boundaries so the pixel would not exceed 255
-     		if (sumofr > 255)
+     		if (sumofr > 255) {
      			sumofr = 255;
-     		if (sumofg > 255)
+     		}
+     		if (sumofg > 255) {
      			sumofg = 255;
-     		if (sumofb > 255)
+     		}
+     		if (sumofb > 255) {
      			sumofb = 255;
-     		
+     		}
      		// setting boundaries so the pixel would not be negative
-     		if (sumofr < 0)
+     		if (sumofr < 0) {
      			sumofr = 0;
-     		if (sumofg < 0)
+     		}
+     		if (sumofg < 0) {
      			sumofg = 0;
-     		if (sumofb < 0)
+     		}
+     		if (sumofb < 0) {
      			sumofb = 0;
-     		
+     		}
      		//setting new values as new rgb or putting pixels onto finaledge
      		finaledge[i][j] = new Color(sumofr, sumofg, sumofb); 
      	
@@ -362,10 +356,10 @@ public class Photo_shop extends Component {
      		int b = c.getBlue();
      		
      		// getting the average
-     		int avg = (r+g+b)/3;
+     		int sum = (r+g+b)/3;
      		
      		// using the averages as the new rgb value so would be greyscale.
-     		pixels[i][j] = new Color(avg, avg, avg); 
+     		pixels[i][j] = new Color(sum, sum, sum); 
  	
      	}
  	}
