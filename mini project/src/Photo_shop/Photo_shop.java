@@ -45,21 +45,26 @@ public class Photo_shop extends Component {
      		int b = c.getBlue() + amount;
      		
      		// setting boundaries so value would not excess 255
-     		if (r > 255)
-     			r = 255;
-     		if (g > 255)
-     			g = 255;
-     		if (b > 255)
-     			b = 255;
-     		
-     		
-     		// setting boundaries so value would not be less than 0
-     		if (r < 0)
-     			r = 0;
-     		if (g < 0)
-     			g = 0;
-     		if (b < 0)
-     			b = 0;
+     		if(r > 255) {
+        		r = 255;
+        	}
+        	if(g > 255) {
+        		g = 255;
+        	}
+        	if(b > 255) {
+        		b = 255;
+        	}
+        	if(amount < 0) {
+        		if(r < 0) {
+        			r = 0;
+        		}
+        		if(g < 0) {
+        			g = 0;
+        		}
+        		if(b < 0) {
+        			b = 0;
+        		}
+        	}
      		
      		// setting new rgb value
      		pixels[i][j] = new Color(r, g,  b);
@@ -118,34 +123,15 @@ public class Photo_shop extends Component {
  // to do this: subtract each pixel's rgb value from 255 
  // and use this as the new value
  public void negate() {
-     outputName = "negated_" + outputName;
-     
-     for (int i = 0; i < pixels.length; i++) {
-     	for(int j = 0; j < pixels[i].length; j++) {
-     		
-     		Color c = pixels[i][j];
-     		
-     		// getting rgb value and subtracting them from 255 to get negate.
-     		int r = 255 - c.getRed();
-     		int g = 255 - c.getGreen();
-     		int b = 255 - c.getBlue();
-     		
-     		
-     		// setting boundaries so the values do not exceed 255
-     		if (r > 255)
-     			r = 255;
-     		if (g > 255)
-     			g = 255;
-     		if (b > 255)
-     			b = 255;
-     		
-     		
-     		pixels[i][j] = new Color(r, g,  b);
-     		
-     		
-     	}
-     }
-     
+    outputName = "negated_" + outputName;
+        
+        for(int i = 0; i < pixels.length; i++) {
+        	for(int j = 0; j < pixels[i].length; j++) {
+        		Color c = pixels[i][j];
+                pixels[i][j] = new Color(255 - c.getRed(), 255 - c.getGreen(), 255 - c.getBlue());
+                
+        	}
+        }
     
  }
  
@@ -155,43 +141,39 @@ public class Photo_shop extends Component {
  // use this predefined color as the rgb value for the changed image.
  public void simplify() {
  
- 		// the list of colors to compare to. Feel free to change/add colors
- 		Color[] colorList = {Color.BLUE, Color.RED,Color.ORANGE, Color.MAGENTA,
-             Color.BLACK, Color.WHITE, Color.GREEN, Color.YELLOW, Color.CYAN};
-     outputName = "simplified_" + outputName;
-     
+	// the list of colors to compare to. Feel free to change/add colors
+		Color[] colorList = {Color.BLUE, Color.RED,Color.ORANGE, Color.MAGENTA,
+         Color.BLACK, Color.WHITE, Color.GREEN, Color.YELLOW, Color.CYAN};
+ outputName = "simplified_" + outputName;
  
- 	for (int i = 0; i < pixels.length; i++) {
-     	for(int j = 0; j < pixels[i].length; j++) {
-     		
-     		// setting infinit value for minimum.
-     		double min = Integer.MAX_VALUE;
-     		// setting default rgb value.
-     		Color rgb = Color.GREEN;
-     		
-     		// for loop that runs through given list
-     		for (int co = 0; co < colorList.length; co++) {
-     			
-     			// importing the distance formula
-     			double math = distance(pixels[i][j], colorList[co]);
-     			// if distance(3d) between the pixel and the color is smaller smaller than min, then 
-     			// min = math and rgb is the matching color in the given list
-     			if(math < min) {
-     				min = math;
-     				rgb = colorList[co];
-     			}
-     				
-     			
-     			
-     		}
-     		
-     		// setting the pixel to new rgb value
-     		pixels[i][j] = rgb;
-     
-     	}
-     }
-     
-     
+ for(int i = 0; i < pixels.length; i++) {
+ 	for(int j = 0; j < pixels[i].length; j++) {
+ 		Color c = pixels[i][j];
+ 		int r = c.getRed();
+ 		int g = c.getGreen();
+ 		int b = c.getBlue();
+ 		
+ 		
+ 		Color similar = colorList[0];
+ 		double difference1 = Math.sqrt(3*Math.pow(255, 2));
+ 		
+ 		
+ 		for(int x = 0; x < colorList.length; x++) {
+ 			Color test = colorList[x];
+ 			int testR = test.getRed();
+ 			int testG = test.getGreen();
+ 			int testB = test.getBlue();
+ 			double difference = Math.sqrt(Math.pow(testR-r, 2) + Math.pow(testG-g, 2) + Math.pow(testB-b, 2));
+ 			if(difference < difference1) {
+ 				difference1 = difference;
+ 				similar = colorList[x];
+ 			}
+ 			
+ 		}
+ 		pixels[i][j] = similar;
+ 	}
+ }
+  
       
  }
  
@@ -201,31 +183,9 @@ public class Photo_shop extends Component {
 
 
  
- public double distance(Color c1, Color c2) {
+ public String distance(Color c1, Color c2) {
  	
- 	 Color c = c1;
-		// getting rgb value of c1
-      int r = c.getRed();
-      int g = c.getGreen();
-      int b = c.getBlue();
-      		
-      
-      Color ctwo = c2;
-      
-      // getting rgb value of c2
-      int r2 = ctwo.getRed();
-      int g2 = ctwo.getGreen();
-      int b2 = ctwo.getBlue();
-      
-      // 3D distance formula,two r subtract, two g subtract, two b subtract and all of their squares square rooted
-      // and then added together.
-      double first = Math.pow(r-r2, 2);
-      double second = Math.pow(g- g2,  2);	
-      double third = Math.pow(b - b2,  2);
-      
-     return Math.sqrt(first + second + third);
- 
- 			// fix this
+	 return " ";
  }
  
  // this blurs the image
@@ -305,9 +265,9 @@ public class Photo_shop extends Component {
      outputName = "edged_" + outputName;
      
      // similar to previous, setting sum values
-     int sumr = 0;
-		int sumg = 0;
-		int sumb = 0;
+     	int sumofr = 0;
+		int sumofb = 0;
+		int sumofg = 0;
 		
 		//a new blank canvas to relocate the pixels on to avoid error
 		Color[][] finaledge = new Color[pixels.length][pixels[0].length];
@@ -354,28 +314,28 @@ public class Photo_shop extends Component {
      		int b9 = c9.getBlue();
      		
      		// the pixel times eight and minus the surrounding pixels to get edge effect
-     		sumr = (r5 * 8) - (r1 + r2 + r3 + r4 + r6 + r7 + r8 + r9);
-     		sumg = (g5 * 8) - (g1 + g2 + g3 + g4 + g6 + g7 + g8 + g9);
-     		sumb = (b5 * 8) - (b1 + b2 + b3 + b4 + b6 + b7 + b8 + b9);
+     		sumofr = (r5 * 8) - (r1 + r2 + r3 + r4 + r6 + r7 + r8 + r9);
+     		sumofg = (g5 * 8) - (g1 + g2 + g3 + g4 + g6 + g7 + g8 + g9);
+     		sumofb = (b5 * 8) - (b1 + b2 + b3 + b4 + b6 + b7 + b8 + b9);
      		
      		// setting boundaries so the pixel would not exceed 255
-     		if (sumr > 255)
-     			sumr = 255;
-     		if (sumg > 255)
-     			sumg = 255;
-     		if (sumb > 255)
-     			sumb = 255;
+     		if (sumofr > 255)
+     			sumofr = 255;
+     		if (sumofg > 255)
+     			sumofg = 255;
+     		if (sumofb > 255)
+     			sumofb = 255;
      		
      		// setting boundaries so the pixel would not be negative
-     		if (sumr < 0)
-     			sumr = 0;
-     		if (sumg < 0)
-     			sumg = 0;
-     		if (sumb < 0)
-     			sumb = 0;
+     		if (sumofr < 0)
+     			sumofr = 0;
+     		if (sumofg < 0)
+     			sumofg = 0;
+     		if (sumofb < 0)
+     			sumofb = 0;
      		
      		//setting new values as new rgb or putting pixels onto finaledge
-     		finaledge[i][j] = new Color(sumr, sumg, sumb); 
+     		finaledge[i][j] = new Color(sumofr, sumofg, sumofb); 
      	
      	}
 		}
@@ -513,4 +473,3 @@ public class Photo_shop extends Component {
 		run();
  }
 }
-
